@@ -1,4 +1,3 @@
-
 import pygame
 import sys
 from pygame.locals import *
@@ -20,7 +19,7 @@ def window(WINDOWWIDTH, WINDOWHEIGHT):
     windowSurface = pygame.display.set_mode((WINDOWWIDTH, WINDOWHEIGHT), 0, 32)
     pygame.display.set_caption("Blackjack")
     windowSurface.fill(BG)
-    img = pygame.image.load('tabletop.png')
+    img = pygame.image.load('AS.png')
     pygame.display.set_icon(img)
     pygame.display.update()
 
@@ -29,79 +28,266 @@ def draw_card(x, y, cardFace):
     # draw white background on card
     CARD_WIDTH = 67
     CARD_HEIGHT = 93.8
-    cardRect = pygame.draw.rect(windowSurface, WHITE, (x, y, CARD_WIDTH, CARD_HEIGHT))
-    # gets the number/letter and the suit of the card
-    rank = cardFace[:1]
-    if rank == "1":
-        rank = cardFace[:2]
-    suit = cardFace[-1:]
-    # check for suit so number is the right colour
-    if suit == "h" or suit == "d":
-        cardNum = basicFont.render(rank, True, RED)
-    else:
-        cardNum = basicFont.render(rank, True, BLACK)
 
-    #Moves cardNum to corner
-    cardNumRect = cardNum.get_rect()
-    cardNumRect.left = x + 7.5
-    cardNumRect.top = y + 7.5
-    windowSurface.blit(cardNum, cardNumRect)
+    if cardFace == "2d":
+        img = pygame.image.load("2D.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
 
-    # dictionary of card type.  Position of spots, down left side, down right side, down middle
-    xPos = {"A": [cardRect.centerx],
-            "2": [cardRect.centerx, cardRect.centerx],
-            "3": [cardRect.centerx, cardRect.centerx, cardRect.centerx],
-            "4": [cardRect.left + (CARD_WIDTH/3), cardRect.left + (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3)],
-            "5": [cardRect.left + (CARD_WIDTH/3), cardRect.left + (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3), cardRect.centerx],
-            "6": [cardRect.left + (CARD_WIDTH/3), cardRect.left + (CARD_WIDTH/3), cardRect.left + (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3)],
-            "7": [cardRect.left + (CARD_WIDTH/3), cardRect.left + (CARD_WIDTH/3), cardRect.left + (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3), cardRect.centerx],
-            "8": [cardRect.left + (CARD_WIDTH/3), cardRect.left + (CARD_WIDTH/3), cardRect.left + (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3), cardRect.centerx, cardRect.centerx],
-            "9": [cardRect.left + (CARD_WIDTH/3), cardRect.left + (CARD_WIDTH/3), cardRect.left + (CARD_WIDTH/3), cardRect.left + (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3), cardRect.centerx],
-            "10": [cardRect.left + (CARD_WIDTH/3), cardRect.left + (CARD_WIDTH/3), cardRect.left + (CARD_WIDTH/3), cardRect.left + (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3), cardRect.right - (CARD_WIDTH/3), cardRect.centerx, cardRect.centerx],
-            "J": [cardRect.centerx],
-            "Q": [cardRect.centerx],
-            "K": [cardRect.centerx]}
+    if cardFace == "2h":
+        img = pygame.image.load("2H.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
 
-    yPos = {"A": [cardRect.centery],
-            "2": [cardRect.top + (CARD_HEIGHT/3), cardRect.bottom - (CARD_HEIGHT/3)],
-            "3": [cardRect.top + (CARD_HEIGHT/4), cardRect.centery, cardRect.bottom - (CARD_HEIGHT/4)],
-            "4": [cardRect.top + (CARD_HEIGHT/3), cardRect.bottom - (CARD_HEIGHT/3), cardRect.top + (CARD_HEIGHT/3), cardRect.bottom - (CARD_HEIGHT/3)],
-            "5": [cardRect.top + (CARD_HEIGHT/3), cardRect.bottom - (CARD_HEIGHT/3), cardRect.top + (CARD_HEIGHT/3), cardRect.bottom - (CARD_HEIGHT/3), cardRect.centery],
-            "6": [cardRect.top + (CARD_HEIGHT/4), cardRect.centery, cardRect.bottom - (CARD_HEIGHT/4), cardRect.top + (CARD_HEIGHT/4), cardRect.centery, cardRect.bottom - (CARD_HEIGHT/4)],
-            "7": [cardRect.top + (CARD_HEIGHT/4), cardRect.centery, cardRect.bottom - (CARD_HEIGHT/4), cardRect.top + (CARD_HEIGHT/4), cardRect.centery, cardRect.bottom - (CARD_HEIGHT/4), cardRect.top + (CARD_HEIGHT/3)],
-            "8": [cardRect.top + (CARD_HEIGHT/4), cardRect.centery, cardRect.bottom - (CARD_HEIGHT/4), cardRect.top + (CARD_HEIGHT/4), cardRect.centery, cardRect.bottom - (CARD_HEIGHT/4), cardRect.top + (CARD_HEIGHT/3), cardRect.bottom - (CARD_HEIGHT/3)],
-            "9": [cardRect.top + (CARD_HEIGHT/5), cardRect.top + (CARD_HEIGHT*2/5), cardRect.top + (CARD_HEIGHT*3/5), cardRect.bottom - (CARD_HEIGHT/5), cardRect.top + (CARD_HEIGHT/5), cardRect.top + (CARD_HEIGHT*2/5), cardRect.top + (CARD_HEIGHT*3/5), cardRect.bottom - (CARD_HEIGHT/5), cardRect.centery],
-            "10": [cardRect.top + (CARD_HEIGHT/5), cardRect.top + (CARD_HEIGHT*2/5), cardRect.top + (CARD_HEIGHT*3/5), cardRect.bottom - (CARD_HEIGHT/5), cardRect.top + (CARD_HEIGHT/5), cardRect.top + (CARD_HEIGHT*2/5), cardRect.top + (CARD_HEIGHT*3/5), cardRect.bottom - (CARD_HEIGHT/5), cardRect.top + (CARD_HEIGHT/3), cardRect.bottom - (CARD_HEIGHT/3)],
-            "J": [cardRect.centery],
-            "Q": [cardRect.centery],
-            "K": [cardRect.centery]}
+    if cardFace == "2c":
+        img = pygame.image.load("2C.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
 
-    # for each value at the key (the number) it draws the correct spot at each position.
-    for spot in range(len(xPos[rank])):
-        suitImage = pygame.Rect(cardRect.centerx, cardRect.centery, 20, 20)
-        suitImage.centerx = xPos[rank][spot]
-        suitImage.centery = yPos[rank][spot]
+    if cardFace == "2s":
+        img = pygame.image.load("2S.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+    
+    if cardFace == "3d":
+        img = pygame.image.load("3D.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
 
-        if suit == "d":
-            diamond = pygame.image.load("diamond2.png")
-            #fit diamond image to card size
-            diamond = pygame.transform.scale(diamond, (20, 20))
-            windowSurface.blit(diamond, suitImage)
+    if cardFace == "3h":
+        img = pygame.image.load("3H.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
 
-        if suit == "h":
-            heart = pygame.image.load("heart2.png")
-            heart = pygame.transform.scale(heart, (15, 15))
-            windowSurface.blit(heart, suitImage)
+    if cardFace == "3c":
+        img = pygame.image.load("3C.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
 
-        if suit == "c":
-            club = pygame.image.load("clubs.png")
-            club = pygame.transform.scale(club, (20, 20))
-            windowSurface.blit(club, suitImage)
+    if cardFace == "3s":
+        img = pygame.image.load("3S.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+    if cardFace == "4d":
+        img = pygame.image.load("4D.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
 
-        if suit == "s":
-            spade = pygame.image.load("spade.png")
-            spade = pygame.transform.scale(spade, (20, 20))
-            windowSurface.blit(spade, suitImage)
+    if cardFace == "4h":
+        img = pygame.image.load("4H.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "4c":
+        img = pygame.image.load("4C.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "4s":
+        img = pygame.image.load("4S.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+        
+    if cardFace == "5d":
+        img = pygame.image.load("5D.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "5h":
+        img = pygame.image.load("5H.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "5c":
+        img = pygame.image.load("5C.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "5s":
+        img = pygame.image.load("5S.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+        
+    if cardFace == "6d":
+        img = pygame.image.load("6D.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "6h":
+        img = pygame.image.load("6H.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "6c":
+        img = pygame.image.load("6C.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "6s":
+        img = pygame.image.load("6S.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+        
+    if cardFace == "7d":
+        img = pygame.image.load("7D.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "7h":
+        img = pygame.image.load("7H.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "7c":
+        img = pygame.image.load("7C.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "7s":
+        img = pygame.image.load("7S.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+        
+    if cardFace == "8d":
+        img = pygame.image.load("8D.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "8h":
+        img = pygame.image.load("8H.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "8c":
+        img = pygame.image.load("8C.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "8s":
+        img = pygame.image.load("8S.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+        
+    if cardFace == "9d":
+        img = pygame.image.load("9D.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "9h":
+        img = pygame.image.load("9H.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "9c":
+        img = pygame.image.load("9C.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "9s":
+        img = pygame.image.load("9S.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+        
+    if cardFace == "10d":
+        img = pygame.image.load("10D.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "10h":
+        img = pygame.image.load("10H.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "10c":
+        img = pygame.image.load("10C.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "10s":
+        img = pygame.image.load("10S.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+        
+    if cardFace == "Jd":
+        img = pygame.image.load("JD.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "Jh":
+        img = pygame.image.load("JH.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "Jc":
+        img = pygame.image.load("JC.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "Js":
+        img = pygame.image.load("JS.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+        
+    if cardFace == "Qd":
+        img = pygame.image.load("QD.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "Qh":
+        img = pygame.image.load("QH.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "Qc":
+        img = pygame.image.load("QC.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "Qs":
+        img = pygame.image.load("QS.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+        
+    if cardFace == "Kd":
+        img = pygame.image.load("KD.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "Kh":
+        img = pygame.image.load("KH.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "Kc":
+        img = pygame.image.load("KC.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "Ks":
+        img = pygame.image.load("KS.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+        
+    if cardFace == "Ad":
+        img = pygame.image.load("AD.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "Ah":
+        img = pygame.image.load("AH.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "Ac":
+        img = pygame.image.load("AC.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+
+    if cardFace == "As":
+        img = pygame.image.load("AS.png")
+        img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
+        windowSurface.blit(img, (x, y))
+        
 
     pygame.display.update()
 
